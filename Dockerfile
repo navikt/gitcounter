@@ -8,5 +8,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
-COPY teamcounter.py ./
+COPY gitcounter.py ./
 CMD ["python", "./teamcounter.py"]
