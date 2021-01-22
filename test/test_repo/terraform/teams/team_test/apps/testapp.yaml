@@ -1,0 +1,28 @@
+name: testapp
+clusters:
+  dev-fss:
+    namespaces:
+      - team_test
+    serviceuser:
+      dev:
+        - srvtestapp
+    oracle:
+      dev:
+        - database_name: testapp_q
+          role: user
+    postgresql:
+      - database_name: testapp
+        permission_level: admin
+  prod-fss:
+    namespaces:
+      - team_test
+    serviceuser:
+      prod:
+        - srvtestapp
+    oracle:
+      prod:
+        - database_name: testapp_p
+          role: user
+    postgresql:
+      - database_name: testapp
+        permission_level: admin
