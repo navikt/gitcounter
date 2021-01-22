@@ -18,3 +18,5 @@ def test_count_databases():
 
     assert counters["postgres"] == 1
     assert counters["oracle"] == 1
+
+    shutil.rmtree(repo_dir)

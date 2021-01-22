@@ -31,14 +31,12 @@ class GitCounter:
                   "oracle": Gauge("databases_oracle", "number of oracle databases")}
 
         while True:
-            self.clone_repo()
             counters = self.count_databases()
 
             self.logger.info(counters)
             for key, value in counters.items():
                 gauges[key].set(value)
 
-            self.delete_local_repo()
             time.sleep(self.sleep)
 
     def count_databases(self):
@@ -74,14 +72,6 @@ class GitCounter:
         if 'postgresql' in file:
             return 1
         return 0
-
-    def clone_repo(self):
-        self.logger.info("cloning repo")
-        Repo.clone_from(self.git_url, self.repo_dir)
-
-    def delete_local_repo(self):
-        self.logger.info("deleting repo")
-        shutil.rmtree(self.repo_dir)
 
 
 if __name__ == "__main__":
