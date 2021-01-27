@@ -1,4 +1,4 @@
-name: dev-gcp
+name: count-db
 
 on:
   push:
@@ -8,8 +8,7 @@ on:
       - .github/**
       - test/resources/**
 jobs:
-  platform-apps:
-    runs-on: [ self-hosted, platform-apps-runner, dev-gcp ]
+  count-db:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
