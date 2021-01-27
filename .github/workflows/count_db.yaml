@@ -14,4 +14,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Count databases
-        uses: docker://navikt/teamcounter:0.1.9
+        uses: docker://navikt/teamcounter:0.1.10
