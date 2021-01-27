@@ -1,0 +1,17 @@
+name: dev-gcp
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/**
+      - test/resources/**
+jobs:
+  platform-apps:
+    runs-on: [ self-hosted, platform-apps-runner, dev-gcp ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Count databases
+        uses: docker://navikt/teamcounter:0.1.9

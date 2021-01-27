@@ -11,7 +11,7 @@ import re
 
 
 class GitCounter:
-    def __init__(self, git_url="https://github.com/navikt/vault-iac", repo_dir="vault-iac"):
+    def __init__(self, git_url="https://github.com/navikt/vault-iac", repo_dir="/github/workspace/"):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         ch = logging.StreamHandler()
@@ -42,7 +42,7 @@ class GitCounter:
     def count_databases(self):
         self.logger.info("counting databases")
 
-        app_yamls = self.get_app_yamls(self.repo_dir + '/terraform/teams')
+        app_yamls = self.get_app_yamls(self.repo_dir + 'test/resources')
 
         df = pd.DataFrame(app_yamls)
         df.columns = ['path']
