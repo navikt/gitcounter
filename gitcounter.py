@@ -30,14 +30,12 @@ class GitCounter:
         gauges = {"postgres": Gauge("databases_postgres", "number of postgres databases"),
                   "oracle": Gauge("databases_oracle", "number of oracle databases")}
 
-        while True:
-            counters = self.count_databases()
+        counters = self.count_databases()
 
-            self.logger.info(counters)
-            for key, value in counters.items():
-                gauges[key].set(value)
+        self.logger.info(counters)
+        for key, value in counters.items():
+            gauges[key].set(value)
 
-            time.sleep(self.sleep)
 
     def count_databases(self):
         self.logger.info("counting databases")
