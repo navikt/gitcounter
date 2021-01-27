@@ -8,7 +8,7 @@ repo_dir = "test/test_repo"
 def build_test_repo():
     deep_path = repo_dir + "/terraform/teams/team_test/apps"
     os.makedirs(deep_path, exist_ok=True)
-    shutil.copyfile("test/resources/testapp.yml", deep_path + "/testapp.yaml")
+    shutil.copyfile("test/resources/apps/testapp.yml", deep_path + "/testapp.yaml")
 
 def test_count_databases():
     build_test_repo()
