@@ -9,7 +9,7 @@ on:
       - test/resources/**
 jobs:
   count-db:
-    runs-on: [ dev-gcp ]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
