@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 
-from prometheus_client import start_http_server, Gauge
+from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import logging
-from git import Repo
-import time
-import shutil
 import os
 import pandas as pd
-import re
 
 
 class GitCounter:
-    def __init__(self, git_url="https://github.com/navikt/vault-iac", repo_dir="/github/workspace/"):
+    def __init__(self,  repo_dir="./"):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         ch = logging.StreamHandler()
@@ -19,14 +15,14 @@ class GitCounter:
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         ch.setFormatter(formatter)
         self.logger.addHandler(ch)
-        self.git_url = git_url
         self.repo_dir = repo_dir
         self.timeout = 60
         self.sleep = 3600
+        self.prometheus_url = "http://nais-prometheus-pushgateway.nais:9091"
 
     def run(self):
-        self.logger.info("starting metrics http server on port 8000")
-        start_http_server(8000)
+        self.logger.info("Creating registry...")
+        registry = CollectorRegistry()
         gauges = {"postgres": Gauge("databases_postgres", "number of postgres databases"),
                   "oracle": Gauge("databases_oracle", "number of oracle databases")}
 
@@ -35,12 +31,15 @@ class GitCounter:
         self.logger.info(counters)
         for key, value in counters.items():
             gauges[key].set(value)
+            gauges[key].set_to_current_time()
 
+        push_to_gateway(self.prometheus_url, job='gitcounter', registry=registry)
+        self.logger.info("Pushed to gateway!")
 
     def count_databases(self):
         self.logger.info("counting databases")
 
-        app_yamls = self.get_app_yamls(self.repo_dir + 'test/resources')
+        app_yamls = self.get_app_yamls(self.repo_dir)
 
         df = pd.DataFrame(app_yamls)
         df.columns = ['path']
