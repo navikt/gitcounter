@@ -23,8 +23,8 @@ class GitCounter:
     def run(self):
         self.logger.info("Creating registry...")
         registry = CollectorRegistry()
-        gauges = {"postgres": Gauge("databases_postgres", "number of postgres databases"),
-                  "oracle": Gauge("databases_oracle", "number of oracle databases")}
+        gauges = {"postgres": Gauge("databases_postgres", "number of postgres databases", registry=registry),
+                  "oracle": Gauge("databases_oracle", "number of oracle databases", registry=registry)}
 
         counters = self.count_databases()
 
