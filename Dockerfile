@@ -10,7 +10,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
-COPY gitcounter.py ./
+COPY gitcounter.py /opt/
 
 USER runner
 WORKDIR /opt/runner
