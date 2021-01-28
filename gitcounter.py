@@ -31,7 +31,6 @@ class GitCounter:
         self.logger.info(counters)
         for key, value in counters.items():
             gauges[key].set(value)
-            gauges[key].set_to_current_time()
 
         push_to_gateway(self.prometheus_url, job='gitcounter', registry=registry)
         self.logger.info("Pushed to gateway!")
