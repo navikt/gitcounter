@@ -23,14 +23,14 @@ class GitCounter:
     def run(self):
         self.logger.info("Creating registry...")
         registry = CollectorRegistry()
-        gauges = {"postgres": Gauge("databases_postgres", "number of postgres databases", registry=registry),
-                  "oracle": Gauge("databases_oracle", "number of oracle databases", registry=registry)}
+
+        gauge = Gauge("databases_onprem", "number of databases onprem (from vault-iac)", ["type"], registry=registry)
 
         counters = self.count_databases()
 
         self.logger.info(counters)
         for key, value in counters.items():
-            gauges[key].set(value)
+            gauge.labels(key).set(value)
 
         push_to_gateway(self.prometheus_url, job='gitcounter', registry=registry)
         self.logger.info("Pushed to gateway!")
