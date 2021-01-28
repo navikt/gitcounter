@@ -1,4 +1,5 @@
-FROM docker.pkg.github.com/nais/docker-github-runner/github-runner:17
+FROM docker.pkg.github.com/nais/docker-github-runner/github-runner:18
+ENV RUNNER_LABELS gitcounter
 
 USER root
 RUN apt-get install -y python3 python3-pip
