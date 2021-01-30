@@ -16,8 +16,6 @@ class GitCounter:
         ch.setFormatter(formatter)
         self.logger.addHandler(ch)
         self.repo_dir = repo_dir
-        self.timeout = 60
-        self.sleep = 3600
         self.prometheus_url = "http://nais-prometheus-pushgateway.nais:9091"
 
     def run(self):
