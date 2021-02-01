@@ -1,0 +1,22 @@
+name: testapp
+clusters:
+  dev-fss:
+    namespaces:
+      - team_test
+    serviceuser:
+      dev:
+        - srvtestapp
+    oracle:
+      dev:
+        - database_name: testapp_q
+          role: user
+  prod-fss:
+    namespaces:
+      - team_test
+    serviceuser:
+      prod:
+        - srvtestapp
+    oracle:
+      prod:
+        - database_name: testapp_p
+          role: user
