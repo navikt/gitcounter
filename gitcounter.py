@@ -21,11 +21,8 @@ class GitCounter:
     def run(self):
         self.logger.info("Creating registry...")
         registry = CollectorRegistry()
-
         gauge = Gauge("databases_onprem", "number of databases onprem (from vault-iac)", ["type"], registry=registry)
-
         counters = self.count_proddatabases()
-
         self.logger.info(counters)
         for key, value in counters.items():
             gauge.labels(key).set(value)
@@ -38,8 +35,7 @@ class GitCounter:
         oracle = 0
         postgres = 0
 
-        app_yamls = self.get_app_yamls(self.repo_dir)
-        for path in app_yamls:
+        for path in self.get_app_yamls(self.repo_dir):
             file = open(path, 'r')
             data = yaml.load(file, Loader=yaml.CLoader)
             for k, v in data["clusters"].items():
@@ -63,6 +59,7 @@ class GitCounter:
                 if '/apps/' in path:
                     app_yamls.append(path)
         return app_yamls
+
 
 if __name__ == "__main__":
     m = GitCounter()
