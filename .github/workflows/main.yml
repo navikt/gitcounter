@@ -7,7 +7,7 @@ env:
 
 jobs:
   test:
-    name: Run pytest
+    name: Run pytest, then build and push docker image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,18 +23,12 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
-
-  build:
-    name: Build and push docker image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
       - name: Generate image environment variable
         run: |
           version=$(./version.sh)
           echo "version=${version}" >> $GITHUB_ENV
           echo "IMAGE=${image}:${version}" >> $GITHUB_ENV
-      - name: Build docker image
+      - name: Build and push docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
