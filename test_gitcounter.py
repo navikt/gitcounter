@@ -18,17 +18,14 @@ def test_get_app_yamls():
     build_test_repo()
     gc = gitcounter.GitCounter(repo_dir=repo_dir)
     yamls = gc.get_app_yamls(repo_dir)
-    assert len(yamls) == 3
     shutil.rmtree(repo_dir)
+    assert len(yamls) == 3
 
 
 def test_count_databases():
     build_test_repo()
     gc = gitcounter.GitCounter(repo_dir=repo_dir)
-
     counters = gc.count_proddatabases()
-
-    assert counters["postgres"] == 3
-    assert counters["oracle"] == 2
-
     shutil.rmtree(repo_dir)
+    assert counters["postgres"] == 1
+    assert counters["oracle"] == 2
