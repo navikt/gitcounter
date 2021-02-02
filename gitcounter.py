@@ -3,7 +3,6 @@
 from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import logging
 import os
-import pandas as pd
 import yaml
 
 
@@ -64,19 +63,6 @@ class GitCounter:
                 if '/apps/' in path:
                     app_yamls.append(path)
         return app_yamls
-
-    def has_oracle(self, path):
-        file = open(path).read()
-        if 'oracle' in file:
-            return 1
-        return 0
-
-    def has_pg(self, path):
-        file = open(path).read()
-        if 'postgresql' in file:
-            return 1
-        return 0
-
 
 if __name__ == "__main__":
     m = GitCounter()
