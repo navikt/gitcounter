@@ -4,10 +4,11 @@ from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import logging
 import os
 import pandas as pd
+import yaml
 
 
 class GitCounter:
-    def __init__(self,  repo_dir="./"):
+    def __init__(self, repo_dir="./"):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         ch = logging.StreamHandler()
@@ -24,7 +25,7 @@ class GitCounter:
 
         gauge = Gauge("databases_onprem", "number of databases onprem (from vault-iac)", ["type"], registry=registry)
 
-        counters = self.count_databases()
+        counters = self.count_proddatabases()
 
         self.logger.info(counters)
         for key, value in counters.items():
@@ -33,17 +34,26 @@ class GitCounter:
         push_to_gateway(self.prometheus_url, job='gitcounter', registry=registry)
         self.logger.info("Pushed to gateway!")
 
-    def count_databases(self):
-        self.logger.info("counting databases")
+    def count_proddatabases(self):
+
+        oracle = 0
+        postgres = 0
 
         app_yamls = self.get_app_yamls(self.repo_dir)
-
-        df = pd.DataFrame(app_yamls)
-        df.columns = ['path']
+        for path in app_yamls:
+            file = open(path, 'r')
+            data = yaml.load(file, Loader=yaml.CLoader)
+            for k, v in data["clusters"].items():
+                if k[0:4] == "prod":
+                    for ki, vi in v.items():
+                        if ki == "oracle":
+                            oracle += 1
+                        if ki == "postgresql":
+                            postgres += 1
 
         return {
-            "oracle": df.apply(lambda x: self.has_oracle(x['path']), axis=1).sum(),
-            "postgres": df.apply(lambda x: self.has_pg(x['path']), axis=1).sum()
+            "oracle": oracle,
+            "postgres": postgres
         }
 
     def get_app_yamls(self, rootdir):

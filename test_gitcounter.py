@@ -16,9 +16,9 @@ def test_count_databases():
     build_test_repo()
     gc = gitcounter.GitCounter(repo_dir=repo_dir)
 
-    counters = gc.count_databases()
+    counters = gc.count_proddatabases()
 
-    assert counters["postgres"] == 2
+    assert counters["postgres"] == 1
     assert counters["oracle"] == 2
 
     shutil.rmtree(repo_dir)

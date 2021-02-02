@@ -9,12 +9,3 @@ clusters:
     postgresql:
       - database_name: testapp
         permission_level: admin
-  prod-fss:
-    namespaces:
-      - team_test
-    serviceuser:
-      prod:
-        - srvtestapp
-    postgresql:
-      - database_name: testapp
-        permission_level: admin
