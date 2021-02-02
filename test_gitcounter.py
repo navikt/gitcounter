@@ -28,7 +28,7 @@ def test_count_databases():
 
     counters = gc.count_proddatabases()
 
-    assert counters["postgres"] == 1
+    assert counters["postgres"] == 3
     assert counters["oracle"] == 2
 
     shutil.rmtree(repo_dir)
