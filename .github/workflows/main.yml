@@ -7,6 +7,7 @@ env:
 
 jobs:
   test:
+    name: Run pytest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +25,7 @@ jobs:
           pytest
 
   build:
-    name: Checkout code and setup node
+    name: Build and push docker image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,9 +40,4 @@ jobs:
         run: |
           docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker build . --tag $IMAGE
-      - name: Login to Github package registry
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u "$GITHUB_REPOSITORY" --password-stdin
-      - name: Push docker image
-        run: docker push $IMAGE
+          docker push $IMAGE
