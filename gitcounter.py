@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+# Std-lib imports
 import logging
 import os
+
+# Third-party imports
+from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import yaml
 
 
