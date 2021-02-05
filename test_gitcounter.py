@@ -17,7 +17,7 @@ def build_test_repo():
 def test_get_app_yamls():
     build_test_repo()
     gc = gitcounter.GitCounter(repo_dir=repo_dir)
-    yamls = gc.get_app_yamls(repo_dir)
+    yamls = list(gc.get_app_yamls(repo_dir))
     shutil.rmtree(repo_dir)
     assert len(yamls) == 3
 

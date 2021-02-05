@@ -39,7 +39,7 @@ class GitCounter:
         oracle = 0
         postgres = 0
 
-        for path in pathlib.Path(self.repo_dir).glob(f"**/apps/**"):
+        for path in self.get_app_yamls(self.repo_dir):
             data = yaml.load(
                 pathlib.Path(path).read_text(),
                 Loader=yaml.CLoader,
@@ -56,6 +56,14 @@ class GitCounter:
             "oracle": oracle,
             "postgres": postgres
         }
+
+    def get_app_yamls(self, rootdir):
+        yield from (
+            path
+            for path
+            in pathlib.Path(rootdir).glob(f"**/apps/**/*.*")
+            if path.is_file()
+        )
 
 
 if __name__ == "__main__":
