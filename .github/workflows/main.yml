@@ -31,7 +31,7 @@ jobs:
           echo "version=${version}" >> $GITHUB_ENV
           echo "IMAGE=${image}:${version}" >> $GITHUB_ENV
       - name: Build and push docker image
-	if: github.ref == 'refs/heads/master'
+	if: ${{ env.GITHUB_REF == 'refs/heads/master' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -42,7 +42,7 @@ jobs:
   deploy:
     name: Deploy to Kubernetes
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: ${{ env.GITHUB_REF == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
