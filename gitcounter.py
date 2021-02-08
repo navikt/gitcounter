@@ -1,8 +1,12 @@
 #!/usr/bin/python3
 
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+# Std-lib imports
 import logging
 import os
+import pathlib
+
+# Third-party imports
+from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import yaml
 
 
@@ -36,8 +40,10 @@ class GitCounter:
         postgres = 0
 
         for path in self.get_app_yamls(self.repo_dir):
-            file = open(path, 'r')
-            data = yaml.load(file, Loader=yaml.CLoader)
+            data = yaml.load(
+                pathlib.Path(path).read_text(),
+                Loader=yaml.CLoader,
+            )
             for k, v in data["clusters"].items():
                 if k[0:4] == "prod":
                     for ki, vi in v.items():
@@ -52,13 +58,12 @@ class GitCounter:
         }
 
     def get_app_yamls(self, rootdir):
-        app_yamls = []
-        for subdir, folders, files in os.walk(rootdir):
-            for file in files:
-                path = os.path.join(subdir, file)
-                if '/apps/' in path:
-                    app_yamls.append(path)
-        return app_yamls
+        yield from (
+            path
+            for path
+            in pathlib.Path(rootdir).glob(f"**/apps/**/*.*")
+            if path.is_file()
+        )
 
 
 if __name__ == "__main__":
