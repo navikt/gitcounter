@@ -36,21 +36,17 @@ class GitCounter:
 
     def count_proddatabases(self):
 
-        oracle = 0
-        postgres = 0
-
+        oracle, postgres = 0, 0
         for path in self.get_app_yamls(self.repo_dir):
             data = yaml.load(
                 pathlib.Path(path).read_text(),
                 Loader=yaml.CLoader,
             )
             for k, v in data["clusters"].items():
-                if k[0:4] == "prod":
-                    for ki, vi in v.items():
-                        if ki == "oracle":
-                            oracle += 1
-                        if ki == "postgresql":
-                            postgres += 1
+                if not k.startswith("prod"): continue
+                potential_database_keys = list(v.keys())
+                oracle += potential_database_keys.count('oracle')
+                postgres += potential_database_keys.count('postgresql')
 
         return {
             "oracle": oracle,
