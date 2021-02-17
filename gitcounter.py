@@ -44,9 +44,9 @@ class GitCounter:
             )
             for k, v in data["clusters"].items():
                 if not k.startswith("prod"): continue
-                for ki, vi in v.items():
-                    if ki == "oracle": oracle += 1
-                    if ki == "postgresql": postgres += 1
+                potential_database_keys = list(v.keys())
+                oracle += potential_database_keys.count('oracle')
+                postgres += potential_database_keys.count('postgresql')
 
         return {
             "oracle": oracle,
