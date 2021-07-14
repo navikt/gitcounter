@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/nais/docker-github-runner/github-runner:18
+FROM docker.pkg.github.com/nais/docker-github-runner/github-runner:22
 ENV RUNNER_LABELS gitcounter
 
 USER root
