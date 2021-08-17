@@ -63,8 +63,8 @@ jobs:
           cd $NAIS_YAML
           git config user.email "aura@nav.no"
           git config user.name "NAIS deploy pipeline"
-          sed -E -i "s#image: .+#image: ${IMAGE}#" vars/gitcounter-runner.yaml
+          sed -E -i "s#image:docker.pkg.github.com/navikt/gitcounter/gitcounter.+#image: ${IMAGE}#" vars/global.yaml
           git add .
           git --no-pager diff --cached
-          git commit -a -m "Bump gitcounter-runner to version ${version}"
+          git commit --no-verify -a -m "Bump gitcounter-runner to version ${version}"
           git push
