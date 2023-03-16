@@ -20,7 +20,7 @@ class GitCounter:
         ch.setFormatter(formatter)
         self.logger.addHandler(ch)
         self.repo_dir = repo_dir
-        self.prometheus_url = "http://nais-prometheus-pushgateway.nais:9091"
+        self.prometheus_url = "http://prometheus-pushgateway.nais-system:9091"
 
     def run(self):
         self.logger.info("Creating registry...")
