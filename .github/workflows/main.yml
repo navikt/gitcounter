@@ -12,6 +12,10 @@ jobs:
   build:
     name: Run pytest, then build and push docker image
     runs-on: ubuntu-latest
+    permissions: 
+      id-token: "write"
+      contents: "read"
+      packages: "write"
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
